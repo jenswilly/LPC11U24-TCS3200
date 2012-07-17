@@ -16,7 +16,9 @@
  *
  *******************************************************************************************************/
 
-
+// ################################################################################
+// Minor fix 8 April 2011 - changed LPC_CT32B1_BASE from 0x40014000 to 0x40018000
+// ################################################################################
 
 /** @addtogroup NXP
   * @{
@@ -616,7 +618,7 @@ typedef struct {
 #define LPC_CT16B0_BASE           (0x4000C000)
 #define LPC_CT16B1_BASE           (0x40010000)
 #define LPC_CT32B0_BASE           (0x40014000)
-#define LPC_CT32B1_BASE           (0x40018000)	/// JWJ changed from 0x40014000
+#define LPC_CT32B1_BASE           (0x40018000)
 #define LPC_ADC_BASE              (0x4001C000)
 #define LPC_PMU_BASE              (0x40038000)
 #define LPC_FLASHCTRL_BASE        (0x4003C000)

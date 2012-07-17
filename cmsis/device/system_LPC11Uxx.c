@@ -422,7 +422,7 @@ void SystemInit (void) {
 #if ((USBCLKDIV_Val & 0x1FF) != 0)                /* USB clock is used        */
   LPC_SYSCON->PDRUNCFG     &= ~(1 << 10);         /* Power-up USB PHY         */
 
-  /* Regardless USB PLL is used as USB clock or not, USB PLL needs to be configured. */
+#if ((USBCLKSEL_Val & 0x003) == 0)                /* USB clock is USB PLL out */
   LPC_SYSCON->PDRUNCFG     &= ~(1 <<  8);         /* Power-up USB PLL         */
   LPC_SYSCON->USBPLLCLKSEL  = USBPLLCLKSEL_Val;   /* Select PLL Input         */
   LPC_SYSCON->USBPLLCLKUEN  = 0x01;               /* Update Clock Source      */
@@ -431,18 +431,11 @@ void SystemInit (void) {
   while (!(LPC_SYSCON->USBPLLCLKUEN & 0x01));     /* Wait Until Updated       */
   LPC_SYSCON->USBPLLCTRL    = USBPLLCTRL_Val;
   while (!(LPC_SYSCON->USBPLLSTAT   & 0x01));     /* Wait Until PLL Locked    */
-
-  LPC_SYSCON->USBCLKSEL  = USBCLKSEL_Val;         /* Select USB Clock         */
-  LPC_SYSCON->USBCLKUEN  = 0x00;                  /* Toggle Update Register   */
-  LPC_SYSCON->USBCLKUEN  = 0x01;
-  LPC_SYSCON->USBCLKDIV  = USBCLKDIV_Val;         /* Set USB clock divider    */
-
-#if ((USBCLKSEL_Val & 0x003) != 0)
-/* Wait for clock switch to happen */
-  for (i = 0; i < 200; i++) __NOP();
-/* Turn-off USB PLL to save power */
-  LPC_SYSCON->PDRUNCFG     |=  (1 <<  8);         /* Power-down USB PLL       */
+  LPC_SYSCON->USBCLKSEL     = 0x00;               /* Select USB PLL           */
 #endif
+
+  LPC_SYSCON->USBCLKSEL     = USBCLKSEL_Val;      /* Select USB Clock         */
+  LPC_SYSCON->USBCLKDIV     = USBCLKDIV_Val;      /* Set USB clock divider    */
 
 #else                                             /* USB clock is not used    */                        
   LPC_SYSCON->PDRUNCFG     |=  (1 << 10);         /* Power-down USB PHY       */

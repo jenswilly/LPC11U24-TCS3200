@@ -52,7 +52,7 @@ ULIBDIR =
 ULIBS = 
 
 # Define optimisation level here
-OPT = -O2
+OPT = -O1
 
 #
 # End of user defines
@@ -98,7 +98,7 @@ DLIBS =
 
 NO_COLOR=\x1b[0m
 OK_COLOR=\x1b[32;01m
-ERROR_COLOR=\x1b[31;01m
+ERROR_COLOR=\x1b[31;01;47m
 WARN_COLOR=\x1b[33;01m
 
 OK_STRING=$(OK_COLOR)[OK]$(NO_COLOR)
