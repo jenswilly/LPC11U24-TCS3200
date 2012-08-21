@@ -183,8 +183,13 @@ ifeq ($(USE_COLORS),1)
 	@$(CP) -O binary $< $@ 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then $(ECHO) "$(ERROR_STRING)" && $(CAT) temp.log; elif test -s temp.log; then $(ECHO) "$(WARN_STRING)" && $(CAT) temp.log; else $(ECHO) "$(OK_STRING)"; fi;
 	@rm -f temp.errors temp.log
+	@$(ECHO) -n Generating checksum... $< to $@…
+	@crc $@ 2> temp.log || touch temp.errors
+	@if test -e temp.errors; then $(ECHO) "$(ERROR_STRING)" && $(CAT) temp.log; elif test -s temp.log; then $(ECHO) "$(WARN_STRING)" && $(CAT) temp.log; else $(ECHO) "$(OK_STRING)"; fi;
+	@rm -f temp.errors temp.log
 else
 	$(CP) -O binary $< $@ 
+	crc $@
 endif
 
 clean-intermediates:
